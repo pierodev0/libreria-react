@@ -152,7 +152,7 @@ function App() {
     }
 
     // Crear enlace de WhatsApp con los datos
-    const url = `https://wa.me/922446371?text=${mensaje}`;
+    const url = `https://wa.me/949411194?text=${mensaje}`;
 
     // Abrir enlace en nueva pestaña
     window.open(url);
