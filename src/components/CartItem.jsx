@@ -27,7 +27,9 @@ export const CartItem = ({
         <div className='flex-1'>
           <p className='text-normal font-bold text-blue-500'>{book.titulo}</p>
           <p>{book.autor}</p>
-          <div className='flex items-center border-gray-100 bg-red'>
+          <p>Pag: {book.paginas}</p>
+          <p>Papel: {book.papel}</p>
+          {/* <div className='flex items-center border-gray-100 bg-red'>
             <span className='rounded-l bg-gray-100 text-sm mr-2'>
               Cant:
             </span>
@@ -46,7 +48,7 @@ export const CartItem = ({
           <p>
             Subtotal :{' '}
             <span className='font-bold text-blue-700'> S/ {book.precio * quantity}</span>
-          </p>
+          </p> */}
         </div>
         <IconTrash onClick={() => removeItem(book.id)} />
       </div>

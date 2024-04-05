@@ -135,17 +135,14 @@ function App() {
         mensaje += '%0A';
         mensaje += `Autor: ${encodeURIComponent(articulo.autor)}`;
         mensaje += '%0A';
-        mensaje += `Precio: ${encodeURIComponent(articulo.precio)}`;
-        mensaje += '%0A';
-        mensaje += `Cantidad: ${encodeURIComponent(articulo.quantity)}`;
-        mensaje += '%0A';
-        mensaje += `Subtotal: ${encodeURIComponent(
-          articulo.quantity * articulo.precio,
-        )}`;
-        mensaje += '%0A';
+        mensaje += `Pag: ${encodeURIComponent(articulo.paginas)}`;
+        mensaje += '%0A';        
+        // mensaje += `Subtotal: ${encodeURIComponent(
+        //   articulo.quantity * articulo.precio,
+        // )}`;
       });
       mensaje += '--------------- %0A';
-      mensaje += `Total a pagar: ${cartTotal}`;
+      // mensaje += `Total a pagar: ${cartTotal}`;
     } else {
       mensaje = '*Buenas estoy interesado en comprar sus libros* %0A';
       console.log('No hay items');
@@ -221,9 +218,9 @@ function App() {
                   )}
                 </div>
                 <div className={`p-2 space-y-2 `}>
-                  {cart.length !== 0 && (
+                  {/* {cart.length !== 0 && (
                     <p className='text-2xl font-bold'>Total: S./{cartTotal}</p>
-                  )}
+                  )} */}
                   <button
                     className='bg-green-500 w-full p-2 rounded-xl text-white font-bold flex items-center justify-center'
                     onClick={handleMessage}

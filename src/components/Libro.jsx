@@ -26,9 +26,9 @@ export const Libro = ({ libro,addToCart }) => {
             Papel: <span className='papel'>{libro.papel}</span>
           </p>
         </div>
-        <p className='font-bold text-2xl text-center mt-2 mb-2'>
+        {/* <p className='font-bold text-2xl text-center mt-2 mb-2'>
           S/ <span className='precio'>{libro.precio}</span>
-        </p>
+        </p> */}
         <button
           id='boton-libro'
           className={`bg-green-500 hover:bg-green-700 w-full p-2 rounded-full text-white font-bold uppercase ${libro.selected ? "!bg-blue-500"  : null}`}
