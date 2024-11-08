@@ -11,6 +11,7 @@ import IconClose from './components/IconClose';
 function App() {
   const MIN_ITEMS = 1;
   const MAX_ITEMS = 9000000;
+  const PHONE_NUMBER = '996506060';
 
   const [data, setData] = useState([]);
   const [cart, setCart] = useState([]);
@@ -136,7 +137,7 @@ function App() {
         mensaje += `Autor: ${encodeURIComponent(articulo.autor)}`;
         mensaje += '%0A';
         mensaje += `Pag: ${encodeURIComponent(articulo.paginas)}`;
-        mensaje += '%0A';        
+        mensaje += '%0A';
         // mensaje += `Subtotal: ${encodeURIComponent(
         //   articulo.quantity * articulo.precio,
         // )}`;
@@ -149,7 +150,7 @@ function App() {
     }
 
     // Crear enlace de WhatsApp con los datos
-    const url = `https://wa.me/949411194?text=${mensaje}`;
+    const url = `https://wa.me/${PHONE_NUMBER}?text=${mensaje}`;
 
     // Abrir enlace en nueva pestaña
     window.open(url);
