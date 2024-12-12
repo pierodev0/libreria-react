@@ -1,7 +1,5 @@
-const IconClose = ({onClick}) => {
-    function handleClick(){
-        onClick()
-      }
+import type { SVGProps } from 'react';
+const IconClose = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -10,7 +8,7 @@ const IconClose = ({onClick}) => {
       strokeWidth={1.5}
       stroke='currentColor'
       className='w-9 h-9 text-white'
-      onClick={handleClick}
+      {...props}
     >
       <path
         strokeLinecap='round'

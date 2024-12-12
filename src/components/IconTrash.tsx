@@ -1,7 +1,6 @@
-export const IconTrash = ({onClick}) => {
-  function handleClick(){
-    onClick()
-  }
+import { SVGProps } from 'react';
+
+export function IconTrash(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -10,7 +9,7 @@ export const IconTrash = ({onClick}) => {
       strokeWidth={1.5}
       stroke='currentColor'
       className='w-6 h-6 text-red-500'
-      onClick={handleClick}
+      {...props}
     >
       <path
         strokeLinecap='round'
@@ -19,4 +18,4 @@ export const IconTrash = ({onClick}) => {
       />
     </svg>
   );
-};
+}

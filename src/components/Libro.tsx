@@ -1,7 +1,16 @@
-export const Libro = ({ libro,addToCart }) => {
+import { BookLanding } from 'types';
+
+type LibroProps = {
+  libro: BookLanding;
+  addToCart: (book: BookLanding) => void;
+};
+
+export const Libro = ({ libro, addToCart }: LibroProps) => {
   return (
     <div
-      className={`bg-white  p-4 rounded-lg shadow-lg ${libro.selected ? "!bg-blue-300" : null}`}
+      className={`bg-white  p-4 rounded-lg shadow-lg ${
+        libro.selected ? '!bg-blue-300' : null
+      }`}
       key={libro.id}
     >
       <div className='h-[250px] flex justify-center'>
@@ -31,10 +40,12 @@ export const Libro = ({ libro,addToCart }) => {
         </p> */}
         <button
           id='boton-libro'
-          className={`bg-green-500 hover:bg-green-700 w-full p-2 rounded-full text-white font-bold uppercase ${libro.selected ? "!bg-blue-500"  : null}`}
+          className={`bg-green-500 hover:bg-green-700 w-full p-2 rounded-full text-white font-bold uppercase ${
+            libro.selected ? '!bg-blue-500' : null
+          }`}
           onClick={() => addToCart(libro)}
         >
-          {libro.selected ? "Agregado" : "Agregar"}
+          {libro.selected ? 'Agregado' : 'Agregar'}
         </button>
       </div>
     </div>

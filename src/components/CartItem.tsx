@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { IconTrash } from './IconTrash';
+import { IconTrash } from 'components/IconTrash';
+import type { Book, CartItemType } from 'types';
+type CartItemProps = {
+  book: CartItemType;
+  removeItem: (id: Book['id']) => void;
+  increaseQuantity?: (id: Book['id']) => void;
+  decreaseQuantity?: (id: Book['id']) => void;
+  changeQuantity: (id: Book['id'], quantity: number) => void;
+};
+function CartItem({ book, removeItem }: CartItemProps) {
+  // const [quantity, setQuantity] = useState(book.cantidad);
 
-export const CartItem = ({
-  book,
-  removeItem,
-  increaseQuantity,
-  decreaseQuantity,
-  changeQuantity,
-}) => {
-  const [quantity, setQuantity] = useState(book.quantity);
-
-  function handleInput(id, value) {
-    setQuantity(value);
-    changeQuantity(id, value);
-  }
+  // function handleInput(id, value) {
+  //   setQuantity(value);
+  //   changeQuantity(id, value);
+  // }
   return (
     <li className='flex gap-2 p-2 '>
       <div className=' '>
@@ -54,4 +54,6 @@ export const CartItem = ({
       </div>
     </li>
   );
-};
+}
+
+export { CartItem };
