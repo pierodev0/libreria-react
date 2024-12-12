@@ -7,23 +7,24 @@ import { CartItem } from './components/CartItem';
 import { useRef } from 'react';
 import { IconWhatsapp } from './components/IconWhatsapp';
 import IconClose from './components/IconClose';
+import { Book, BookLanding, CartItemType } from 'types';
 
 function App() {
   const MIN_ITEMS = 1;
   const MAX_ITEMS = 9000000;
   const PHONE_NUMBER = '996506060';
 
-  const [data, setData] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [data, setData] = useState<BookLanding[]>([]);
+  const [cart, setCart] = useState<CartItemType[]>([]);
   const [showCart, setShowCart] = useState(false);
 
   //State Derivado
   const cartTotal = cart.reduce(
-    (total, item) => total + item.quantity * item.precio,
+    (total, item) => total + item.cantidad * (item.precio || 1),
     0,
   );
 
-  function addToCart(item) {
+  function addToCart(item: BookLanding) {
     const updatedData = data.map((book) => {
       if (book.id === item.id) {
         return { ...book, selected: true };
@@ -34,18 +35,18 @@ function App() {
     setData(updatedData);
     const itemExist = cart.findIndex((cartItem) => cartItem.id == item.id);
     if (itemExist >= 0) {
-      if (cart[itemExist].quantity >= MAX_ITEMS) return;
+      if (cart[itemExist].cantidad >= MAX_ITEMS) return;
       const updatedCart = [...cart];
-      updatedCart[itemExist].quantity++;
+      updatedCart[itemExist].cantidad++;
       setCart(updatedCart);
     } else {
-      item.quantity = 1;
-      setCart([...cart, item]);
+      const newItem: CartItemType = { ...item, cantidad: 1 };
+      setCart([...cart, newItem]);
     }
   }
-  function changeQuantity(id, value) {
+  function changeQuantity(id: Book['id'], value: number) {
     const updatedCart = cart.map((item) => {
-      if (item.id === id && item.quantity < MAX_ITEMS) {
+      if (item.id === id && item.cantidad < MAX_ITEMS) {
         return {
           ...item,
           quantity: value,
@@ -57,12 +58,12 @@ function App() {
     setCart(updatedCart);
   }
 
-  function increaseQuantity(id) {
+  function increaseQuantity(id: Book['id']) {
     const updatedCart = cart.map((item) => {
-      if (item.id === id && item.quantity < MAX_ITEMS) {
+      if (item.id === id && item.cantidad < MAX_ITEMS) {
         return {
           ...item,
-          quantity: item.quantity + 1,
+          cantidad: item.cantidad + 1,
         };
       }
       return item;
@@ -71,12 +72,12 @@ function App() {
     setCart(updatedCart);
   }
 
-  function decreaseQuantity(id) {
+  function decreaseQuantity(id: Book['id']) {
     const updatedCart = cart.map((item) => {
-      if (item.id === id && item.quantity > MIN_ITEMS) {
+      if (item.id === id && item.cantidad > MIN_ITEMS) {
         return {
           ...item,
-          quantity: item.quantity - 1,
+          cantidad: item.cantidad - 1,
         };
       }
       return item;
@@ -89,7 +90,7 @@ function App() {
     setCart([]);
   }
 
-  function removeItem(id) {
+  function removeItem(id: Book['id']) {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
 
     const updatedData = data.map((book) => {
@@ -111,13 +112,17 @@ function App() {
     });
   }, []);
 
-  let modalRef = useRef();
+  const modalRef = useRef<HTMLUListElement>(null);
 
-  function checkClickOutside(e) {
-    if (showCart && !modalRef.current.contains(e.target)) {
+  const checkClickOutside = (e: MouseEvent) => {
+    if (
+      showCart &&
+      modalRef.current &&
+      !modalRef.current.contains(e.target as Node)
+    ) {
       setShowCart(false);
     }
-  }
+  };
 
   useEffect(() => {
     document.addEventListener('mousedown', checkClickOutside);
@@ -213,7 +218,6 @@ function App() {
                         increaseQuantity={increaseQuantity}
                         decreaseQuantity={decreaseQuantity}
                         changeQuantity={changeQuantity}
-                        cart={cart}
                       />
                     ))
                   )}
