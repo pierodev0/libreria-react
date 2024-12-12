@@ -18,7 +18,7 @@ export type AppState = {
 };
 const MAX_ITEMS = 5;
 const MIN_ITEMS = 1;
-export const initialState = {
+export const initialState: AppState = {
   data: [],
   cart: ls.get<CartItemType[]>('cart') ?? [],
 };
@@ -28,8 +28,11 @@ export function appReducer(
   action: AppActions,
 ): AppState {
   if (action.type === 'add-cart') {
-    const updatedData = state.data.map((item) =>
-      item.id === action.payload.item.id ? { ...item, selected: true } : item,
+    let updatedData: BookLanding[] = [];
+    updatedData = state.data.map((item) =>
+      item.id === action.payload.item.id
+        ? { ...item, selected: !item.selected }
+        : item,
     );
     const itemExists = state.cart.find(
       (item) => item.id === action.payload.item.id,
@@ -38,10 +41,9 @@ export function appReducer(
     let updatedCart: CartItemType[] = [];
 
     if (itemExists) {
-      updatedCart = state.cart.map((item) =>
-        item.id === action.payload.item.id && item.cantidad < MAX_ITEMS
-          ? { ...item, cantidad: item.cantidad + 1 }
-          : item,
+      // Eliminar del carrito si existe
+      updatedCart = state.cart.filter(
+        (item) => item.id !== action.payload.item.id,
       );
     } else {
       updatedCart = [...state.cart, { ...action.payload.item, cantidad: 1 }];
