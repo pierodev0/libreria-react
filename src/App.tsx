@@ -7,110 +7,18 @@ import { CartItem } from './components/CartItem';
 import { useRef } from 'react';
 import { IconWhatsapp } from './components/IconWhatsapp';
 import IconClose from './components/IconClose';
-import { Book, BookLanding, CartItemType } from 'types';
+import useAppContext from 'context/useAppContext';
 
 function App() {
-  const MIN_ITEMS = 1;
-  const MAX_ITEMS = 9000000;
   const PHONE_NUMBER = '996506060';
-
-  const [data, setData] = useState<BookLanding[]>([]);
-  const [cart, setCart] = useState<CartItemType[]>([]);
+  const { state } = useAppContext();
   const [showCart, setShowCart] = useState(false);
 
   //State Derivado
-  const cartTotal = cart.reduce(
+  const cartTotal = state.cart.reduce(
     (total, item) => total + item.cantidad * (item.precio || 1),
     0,
   );
-
-  function addToCart(item: BookLanding) {
-    const updatedData = data.map((book) => {
-      if (book.id === item.id) {
-        return { ...book, selected: true };
-      }
-      return book;
-    });
-
-    setData(updatedData);
-    const itemExist = cart.findIndex((cartItem) => cartItem.id == item.id);
-    if (itemExist >= 0) {
-      if (cart[itemExist].cantidad >= MAX_ITEMS) return;
-      const updatedCart = [...cart];
-      updatedCart[itemExist].cantidad++;
-      setCart(updatedCart);
-    } else {
-      const newItem: CartItemType = { ...item, cantidad: 1 };
-      setCart([...cart, newItem]);
-    }
-  }
-  function changeQuantity(id: Book['id'], value: number) {
-    const updatedCart = cart.map((item) => {
-      if (item.id === id && item.cantidad < MAX_ITEMS) {
-        return {
-          ...item,
-          quantity: value,
-        };
-      }
-      return item;
-    });
-
-    setCart(updatedCart);
-  }
-
-  function increaseQuantity(id: Book['id']) {
-    const updatedCart = cart.map((item) => {
-      if (item.id === id && item.cantidad < MAX_ITEMS) {
-        return {
-          ...item,
-          cantidad: item.cantidad + 1,
-        };
-      }
-      return item;
-    });
-
-    setCart(updatedCart);
-  }
-
-  function decreaseQuantity(id: Book['id']) {
-    const updatedCart = cart.map((item) => {
-      if (item.id === id && item.cantidad > MIN_ITEMS) {
-        return {
-          ...item,
-          cantidad: item.cantidad - 1,
-        };
-      }
-      return item;
-    });
-
-    setCart(updatedCart);
-  }
-
-  function clearCart() {
-    setCart([]);
-  }
-
-  function removeItem(id: Book['id']) {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
-
-    const updatedData = data.map((book) => {
-      if (book.id === id) {
-        return { ...book, selected: false };
-      }
-      return book;
-    });
-
-    setData(updatedData);
-  }
-
-  useEffect(() => {
-    const parser = new PublicGoogleSheetsParser(
-      '15bJDxtjRCyGkKYYwytL49mmbYmt35q-C2L6WW6HpuHw',
-    );
-    parser.parse().then((data) => {
-      setData(data);
-    });
-  }, []);
 
   const modalRef = useRef<HTMLUListElement>(null);
 
@@ -133,9 +41,9 @@ function App() {
     let mensaje = '';
 
     mensaje = '*Buenas estoy interesado en los siguiente libros:* %0A';
-    if (cart.length) {
+    if (state.cart.length) {
       console.log('Hay items');
-      cart.forEach((articulo) => {
+      state.cart.forEach((articulo) => {
         mensaje += '--------------- %0A';
         mensaje += `Libro: ${encodeURIComponent(articulo.titulo)}`;
         mensaje += '%0A';
@@ -186,10 +94,10 @@ function App() {
                   onClick={() => setShowCart(!showCart)}
                 >
                   <IconCart />
-                  {cart.length !== 0 && (
+                  {state.cart.length !== 0 && (
                     <span className='absolute -top-2 -right-2 bg-red-500 rounded-full  '>
                       <div className=' flex w-6 h-6  text-white text-sm justify-center items-center '>
-                        {cart.length}
+                        {state.cart.length}
                       </div>
                     </span>
                   )}
@@ -207,17 +115,13 @@ function App() {
                 }`}
               >
                 <div className='max-h-[calc(100vh-200px)] sm:max-h-[500px] overflow-y-auto divide-y  divide-gray-300'>
-                  {cart.length === 0 ? (
+                  {state.cart.length === 0 ? (
                     <p className='text-center p-3'>El carrito esta vacio</p>
                   ) : (
-                    cart.map((book) => (
+                    state.cart.map((book) => (
                       <CartItem
                         key={book.id}
                         book={book}
-                        removeItem={removeItem}
-                        increaseQuantity={increaseQuantity}
-                        decreaseQuantity={decreaseQuantity}
-                        changeQuantity={changeQuantity}
                       />
                     ))
                   )}
@@ -251,11 +155,10 @@ function App() {
           id='lista-libros'
           className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'
         >
-          {data.map((libro) => (
+          {state.data.map((libro) => (
             <Libro
               key={libro.id}
               libro={libro}
-              addToCart={addToCart}
             />
           ))}
         </ul>

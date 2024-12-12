@@ -1,11 +1,12 @@
+import useAppContext from 'context/useAppContext';
 import { BookLanding } from 'types';
 
 type LibroProps = {
   libro: BookLanding;
-  addToCart: (book: BookLanding) => void;
 };
 
-export const Libro = ({ libro, addToCart }: LibroProps) => {
+export const Libro = ({ libro }: LibroProps) => {
+  const { dispatch } = useAppContext();
   return (
     <div
       className={`bg-white  p-4 rounded-lg shadow-lg ${
@@ -41,9 +42,11 @@ export const Libro = ({ libro, addToCart }: LibroProps) => {
         <button
           id='boton-libro'
           className={`bg-green-500 hover:bg-green-700 w-full p-2 rounded-full text-white font-bold uppercase ${
-            libro.selected ? '!bg-blue-500' : null
+            libro.selected ? '!bg-blue-500' : ''
           }`}
-          onClick={() => addToCart(libro)}
+          onClick={() =>
+            dispatch({ type: 'add-cart', payload: { item: libro } })
+          }
         >
           {libro.selected ? 'Agregado' : 'Agregar'}
         </button>

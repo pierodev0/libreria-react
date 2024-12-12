@@ -1,13 +1,11 @@
 import { IconTrash } from 'components/IconTrash';
+import useAppContext from 'context/useAppContext';
 import type { Book, CartItemType } from 'types';
 type CartItemProps = {
   book: CartItemType;
-  removeItem: (id: Book['id']) => void;
-  increaseQuantity?: (id: Book['id']) => void;
-  decreaseQuantity?: (id: Book['id']) => void;
-  changeQuantity: (id: Book['id'], quantity: number) => void;
 };
-function CartItem({ book, removeItem }: CartItemProps) {
+function CartItem({ book }: CartItemProps) {
+  const { dispatch } = useAppContext();
   // const [quantity, setQuantity] = useState(book.cantidad);
 
   // function handleInput(id, value) {
@@ -50,7 +48,11 @@ function CartItem({ book, removeItem }: CartItemProps) {
             <span className='font-bold text-blue-700'> S/ {book.precio * quantity}</span>
           </p> */}
         </div>
-        <IconTrash onClick={() => removeItem(book.id)} />
+        <IconTrash
+          onClick={() =>
+            dispatch({ type: 'remove-from-cart', payload: { id: book.id } })
+          }
+        />
       </div>
     </li>
   );
